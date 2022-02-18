@@ -1,0 +1,26 @@
+﻿@model FLS_task.Features.Catalog.ViewModels.ProductListPageViewModel
+
+<h1>Catalog view</h1>
+
+@if (Model?.Products != null || !Model.Products.Any())
+{
+    @foreach (var productVariantsTuple in Model.Products)
+    {
+        <div class="catalog-item">
+            @productVariantsTuple.Item1.Name<br />
+            @foreach (var v in productVariantsTuple.Item2)
+            {
+                if (!string.IsNullOrWhiteSpace(v.Description)) {
+                    @v.Description
+                    <br />
+                }
+                @v.Price.ToString("0.00") <text>&euro;</text><br />
+                @Html.ActionLink("Add to cart", "AddToCart", "Cart", new { sku = v.SKU, redirect = Context.Request.Path }, new { @class= "add-to-cart-link" })
+            }
+        </div>
+    }
+}
+else
+{
+    <p>There are no products!</p>
+}

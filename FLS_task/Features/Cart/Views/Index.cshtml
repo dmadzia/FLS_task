@@ -1,0 +1,27 @@
+﻿@model FLS_task.Features.Cart.ViewModels.CartViewModel
+
+<h1>Cart</h1>
+
+@if (Model?.CartData?.Items != null && Model.CartData.Items.Any())
+{
+    @foreach (var cartItem in Model.CartData.Items)
+    {
+        <div class="cart-row">
+            @cartItem.SKU<br />
+            Q: @cartItem.Quantity<br />
+            P: @cartItem.EffectiveLinePrice.ToString("0.00")<br />
+            @Html.ActionLink("Add 1 item", "AddToCart", "Cart", new { sku = cartItem.SKU, redirect = Context.Request.Path })<br />
+            @Html.ActionLink("Remove 1 item", "RemoveFromCart", "Cart", new { sku = cartItem.SKU, quantity = 1, redirect = Context.Request.Path })<br />
+            @Html.ActionLink("Remove line", "RemoveFromCart", "Cart", new { sku = cartItem.SKU, quantity = cartItem.Quantity, redirect = Context.Request.Path })<br />
+            @if (!string.IsNullOrEmpty(cartItem.AppliedDiscountDescription))
+            {
+                <br />
+                @cartItem.AppliedDiscountDescription
+            }
+        </div>
+    }
+}
+else
+{
+    <p>Cart is empty!</p>
+}
